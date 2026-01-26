@@ -1,0 +1,8 @@
+/* Global styles */
+a {
+  color: #42b983; /* Vue green */
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}

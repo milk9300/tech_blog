@@ -1,0 +1,61 @@
+/* Django Admin Article Enhancement Styles */
+
+/* 增大正文编辑区域 */
+.field-content .EasyMDEContainer,
+.field-content .CodeMirror {
+    min-height: 500px;
+}
+
+.field-content .CodeMirror-scroll {
+    min-height: 480px;
+}
+
+/* 增大摘要输入框 */
+.field-summary textarea {
+    min-height: 120px;
+    width: 100%;
+}
+
+/* 优化整体表单宽度 */
+#article_form .form-row {
+    max-width: 100%;
+}
+
+/* EasyMDE 工具栏优化 */
+.editor-toolbar {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+/* 预览区域样式 */
+.EasyMDEContainer .editor-preview {
+    background-color: #fff;
+    padding: 20px;
+}
+
+.EasyMDEContainer .editor-preview pre {
+    background-color: #f6f8fa;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.EasyMDEContainer .editor-preview code {
+    background-color: #f6f8fa;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+
+/* 暗色主题支持 (Django Admin 暗色模式) */
+@media (prefers-color-scheme: dark) {
+    .EasyMDEContainer .CodeMirror {
+        background-color: #1f2937;
+        color: #e5e7eb;
+    }
+
+    .EasyMDEContainer .editor-preview {
+        background-color: #1f2937;
+        color: #e5e7eb;
+    }
+}

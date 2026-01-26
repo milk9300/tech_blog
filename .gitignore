@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Node
+node_modules/
+dist/
+npm-debug.log*
+.env
+
+# Docker
+.docker_data/
+docker-compose.yml
+docker-compose.prod.yml
+Dockerfile
+
+# IDE
+.idea/
+.vscode/
+
+# Project specific
+backend/static/
+backend/media/
+backend/staticfiles/
+*.sqlite3
