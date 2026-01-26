@@ -3,13 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 venv/
-.env
 
 # Node
 node_modules/
 dist/
 npm-debug.log*
-.env
 
 # Docker
 .docker_data/
