@@ -19,27 +19,23 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "unfold",                  # <--- 必须在 admin 之前!
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
-    # Third party
-    "rest_framework",
-    "corsheaders",
-    
-    # Local
-    "blog",
+    "mdeditor",                # Markdown 编辑器
+    "blog",                    # 你的应用
 ]
 
 MIDDLEWARE = [
@@ -59,7 +55,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -77,14 +73,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "NAME": os.getenv("MYSQL_DATABASE", 'tech_blog'),
-            "USER": os.getenv("MYSQL_USER", 'root'),
-            "PASSWORD": os.getenv("MYSQL_PASSWORD", 'lsh0903'),
-            "HOST": os.getenv("MYSQL_HOST", 'db'),
-            "PORT": os.getenv("MYSQL_PORT", '3306'),
-        }
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
 
 
@@ -123,9 +115,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "static"
+STATICFILES_DIRS = [
+    BASE_DIR / "blog" / "static",
+]
 
-MEDIA_URL = "media/"
+# Media files (uploads)
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
@@ -133,32 +129,23 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Static files storage for WhiteNoise
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
+# Unfold 配置
+UNFOLD = {
+    "SITE_TITLE": "书淮BLOG",
+    "SITE_HEADER": "ShuHuai Blog Admin",
+    "SITE_SYMBOL": "speed", # 侧边栏图标
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
 }
 
-# CORS
-# ALLOWED_HOSTS is handled at the top of the file via os.getenv
+# Mdeditor 配置
+MDEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+        'height': 500,
+        'toolbar': ["undo", "redo", "|", "bold", "italic", "quote", "|", "image", "code-block", "preview", "watch"]
+    }
+}
 
-# CORS
-CORS_ALLOW_ALL_ORIGINS = DEBUG
-
-if not DEBUG:
-    CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost').split(',')
-    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost').split(',')
-else:
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost",
-    ]
-    CSRF_TRUSTED_ORIGINS = [
-        "http://localhost",
-        "https://localhost",
-    ]
+# 允许 iframe (为了 Markdown 预览正常工作)
+X_FRAME_OPTIONS = 'SAMEORIGIN'

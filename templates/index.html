@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative py-24 md:py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5"></div>
+    <div class="max-w-6xl mx-auto px-4 text-center relative z-10">
+        <p class="text-primary font-medium tracking-widest uppercase text-sm mb-6">欢迎来到我的知识库</p>
+        <h1 class="text-5xl md:text-7xl mb-8 tracking-tight leading-tight">
+            探索<span class="italic text-primary">技术</span>与创意的边界
+        </h1>
+        <p class="max-w-2xl mx-auto text-slate-500 dark:text-slate-400 text-lg md:text-xl leading-relaxed">
+            我是书淮，一个专注于全栈开发、系统架构与知识体系构建的开发者。
+            这里记录着我的思考、项目与成长。
+        </p>
+        <div class="mt-10 flex justify-center gap-4">
+            <a href="{% url 'articles' %}" class="btn-primary">阅读文章</a>
+            <a href="{% url 'projects' %}"
+                class="px-5 py-2 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                查看项目
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects -->
+<section class="py-16 bg-slate-100/50 dark:bg-slate-900/30">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <p class="text-primary text-sm font-medium tracking-widest uppercase mb-2">精选项目</p>
+                <h2 class="text-3xl md:text-4xl">个人作品</h2>
+            </div>
+            <a href="{% url 'projects' %}" class="text-primary hover:underline text-sm font-medium">查看全部 →</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for project in featured_projects %}
+            <div class="card group cursor-pointer hover:-translate-y-1">
+                {% if project.image %}
+                <div class="aspect-video rounded-xl overflow-hidden mb-4 bg-slate-200 dark:bg-slate-800">
+                    <img src="{{ project.image.url }}" alt="{{ project.name }}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                {% else %}
+                <div
+                    class="aspect-video rounded-xl mb-4 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                    <span class="text-4xl text-primary/50">{{ project.name|slice:":1" }}</span>
+                </div>
+                {% endif %}
+                <h3 class="text-xl mb-2 group-hover:text-primary transition-colors">{{ project.name }}</h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">{{ project.desc }}</p>
+            </div>
+            {% empty %}
+            <div class="col-span-3 text-center py-16 card">
+                <p class="text-slate-500 italic">暂无公开项目，敬请期待...</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Articles -->
+<section class="py-16">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <p class="text-primary text-sm font-medium tracking-widest uppercase mb-2">最新发布</p>
+                <h2 class="text-3xl md:text-4xl">文章精选</h2>
+            </div>
+            <a href="{% url 'articles' %}" class="text-primary hover:underline text-sm font-medium">查看全部 →</a>
+        </div>
+        <div class="space-y-4">
+            {% for article in featured_articles %}
+            <a href="{% url 'article_detail' article.pk %}" class="card block group hover:-translate-y-0.5">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex-grow">
+                        <div class="flex gap-2 mb-2">
+                            {% for tag in article.tags.all %}
+                            <span
+                                class="text-[10px] uppercase tracking-widest text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-full">{{
+                                tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <h3 class="text-xl md:text-2xl group-hover:text-primary transition-colors">{{ article.title }}
+                        </h3>
+                    </div>
+                    <div class="text-slate-400 dark:text-slate-500 text-sm font-mono shrink-0">
+                        {{ article.created_at|date:"Y.m.d" }}
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <div class="text-center py-16 card">
+                <p class="text-slate-500">还在准备中，敬请期待...</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- About Section Preview -->
+<section class="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <p class="text-primary text-sm font-medium tracking-widest uppercase mb-4">关于我</p>
+        <h2 class="text-3xl md:text-4xl mb-6">一个热爱技术的创造者</h2>
+        <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed mb-8">
+            我相信技术是艺术与逻辑的完美结合。在这里，你将探索到软件工程、系统设计、以及个人成长等多维度的内容。
+            每一篇文章都是我思考的结晶，每一个项目都是实践的见证。
+        </p>
+        <a href="{% url 'about' %}" class="btn-primary">了解更多</a>
+    </div>
+</section>
+{% endblock %}

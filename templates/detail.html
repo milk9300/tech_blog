@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }} | 书淮BLOG{% endblock %}
+
+{% block extra_head %}
+<!-- Markdown Styling -->
+<style>
+    .prose h1 {
+        @apply text-4xl mb-8 mt-12;
+    }
+
+    .prose h2 {
+        @apply text-3xl mb-6 mt-10;
+    }
+
+    .prose h3 {
+        @apply text-2xl mb-4 mt-8;
+    }
+
+    .prose p {
+        @apply text-slate-400 leading-relaxed mb-6 text-lg;
+    }
+
+    .prose ul {
+        @apply list-disc list-inside mb-6 space-y-2 text-slate-400;
+    }
+
+    .prose ol {
+        @apply list-decimal list-inside mb-6 space-y-2 text-slate-400;
+    }
+
+    .prose code {
+        @apply bg-white/10 px-1.5 py-0.5 rounded text-primary font-mono text-sm;
+    }
+
+    .prose pre {
+        @apply bg-surface p-6 rounded-2xl overflow-x-auto my-8 border border-white/5;
+    }
+
+    .prose pre code {
+        @apply bg-transparent p-0 text-slate-300;
+    }
+
+    .prose blockquote {
+        @apply border-l-4 border-primary pl-6 italic text-slate-500 my-8;
+    }
+
+    .prose img {
+        @apply rounded-2xl mx-auto my-12 shadow-2xl;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<article class="max-w-4xl mx-auto py-12">
+    <!-- Header -->
+    <header class="text-center mb-16">
+        <div class="flex justify-center gap-3 mb-6">
+            {% for tag in article.tags.all %}
+            <span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full tracking-wide">
+                {{ tag.name|upper }}
+            </span>
+            {% endfor %}
+        </div>
+        <h1 class="text-4xl md:text-6xl mb-6 !leading-tight">{{ article.title }}</h1>
+        <div class="text-slate-500 font-sans tracking-widest text-sm uppercase">
+            {{ article.created_at|date:"F d, Y" }} — 5 MIN READ
+        </div>
+    </header>
+
+    {% if article.cover %}
+    <div class="mb-16 -mx-4 md:-mx-20">
+        <img src="{{ article.cover.url }}" class="w-full aspect-video object-cover rounded-3xl shadow-2xl"
+            alt="{{ article.title }}">
+    </div>
+    {% endif %}
+
+    <!-- Content -->
+    <div class="prose prose-invert max-w-none">
+        {{ article.html_content|safe }}
+    </div>
+
+    <!-- Recommendations -->
+    {% if recommendations %}
+    <section class="mt-32 pt-16 border-t border-white/5">
+        <h2 class="text-3xl mb-10 italic">延续你的<span class="text-primary">思考</span></h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% for rec in recommendations %}
+            <a href="{% url 'article_detail' rec.pk %}"
+                class="group block glass p-8 rounded-3xl hover:border-primary/50 transition-all">
+                <span class="text-[10px] text-primary font-bold mb-2 block uppercase tracking-tighter">READ NEXT</span>
+                <h3 class="text-2xl group-hover:text-primary transition-colors">{{ rec.title }}</h3>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Back to top btn -->
+    <div class="flex justify-center mt-20">
+        <a href="{% url 'index' %}" class="btn-primary">返回主页</a>
+    </div>
+</article>
+{% endblock %}

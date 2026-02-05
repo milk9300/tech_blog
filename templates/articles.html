@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}文章 | 书淮BLOG{% endblock %}
+
+{% block content %}
+<section class="py-16">
+    <div class="max-w-4xl mx-auto px-4">
+        <header class="text-center mb-16">
+            <p class="text-primary text-sm font-medium tracking-widest uppercase mb-4">KNOWLEDGE BASE</p>
+            <h1 class="text-4xl md:text-5xl mb-4">全部文章</h1>
+            <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+                深入探索技术世界，分享我的学习心得与实践经验。
+            </p>
+        </header>
+
+        <div class="space-y-4">
+            {% for article in articles %}
+            <a href="{% url 'article_detail' article.pk %}" class="card block group hover:-translate-y-0.5">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex-grow">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            {% for tag in article.tags.all %}
+                            <span
+                                class="text-[10px] uppercase tracking-widest text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-full">{{
+                                tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <h2 class="text-xl md:text-2xl group-hover:text-primary transition-colors mb-2">{{ article.title
+                            }}</h2>
+                    </div>
+                    <div class="text-slate-400 dark:text-slate-500 text-sm font-mono shrink-0">
+                        {{ article.created_at|date:"Y.m.d" }}
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <div class="text-center py-20 card">
+                <p class="text-slate-500 italic text-lg">暂无文章</p>
+                <p class="text-slate-400 text-sm mt-2">敬请期待，文章正在创作中...</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

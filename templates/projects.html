@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}项目 | 书淮BLOG{% endblock %}
+
+{% block content %}
+<section class="py-16">
+    <div class="max-w-6xl mx-auto px-4">
+        <header class="text-center mb-16">
+            <p class="text-primary text-sm font-medium tracking-widest uppercase mb-4">MY WORKS</p>
+            <h1 class="text-4xl md:text-5xl mb-4">个人项目集</h1>
+            <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+                这里展示了我独立开发或参与的项目。每一个项目都是学习与实践的结果。
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for project in projects %}
+            <article class="card group cursor-pointer hover:-translate-y-1">
+                {% if project.image %}
+                <div class="aspect-video rounded-xl overflow-hidden mb-4 bg-slate-200 dark:bg-slate-800">
+                    <img src="{{ project.image.url }}" alt="{{ project.name }}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                {% else %}
+                <div
+                    class="aspect-video rounded-xl mb-4 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                    <span class="text-5xl text-primary/50">{{ project.name|slice:":1" }}</span>
+                </div>
+                {% endif %}
+                <h2 class="text-xl mb-2 group-hover:text-primary transition-colors">{{ project.name }}</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-3 mb-4">{{ project.desc }}</p>
+                <a href="{{ project.url }}" target="_blank" rel="noopener"
+                    class="inline-flex items-center gap-1 text-primary text-sm font-medium hover:underline">
+                    查看详情
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </article>
+            {% empty %}
+            <div class="col-span-full text-center py-20 card">
+                <p class="text-slate-500 italic text-lg">暂无公开项目</p>
+                <p class="text-slate-400 text-sm mt-2">敬请期待，项目正在建设中...</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

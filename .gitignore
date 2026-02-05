@@ -20,7 +20,14 @@ Dockerfile
 .vscode/
 
 # Project specific
-backend/static/
-backend/media/
-backend/staticfiles/
+static/
+media/
+staticfiles/
 *.sqlite3
+
+# env
+.env
+
+# other
+.agent
+desc/
